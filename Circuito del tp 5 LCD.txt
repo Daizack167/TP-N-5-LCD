@@ -1,0 +1,56 @@
+#include <LiquidCrystal.h>
+// C++ code
+//
+#define tmp A1
+#define fotor A0
+
+LiquidCrystal lcd( 12 , 11 , 10 , 9 , 8, 7 );
+
+void setup()
+{
+  pinMode(6, OUTPUT);
+  pinMode(5, OUTPUT);
+  lcd.begin( 16 ,2 );
+  lcd.setCursor( 0 ,0 );
+  pinMode(3, OUTPUT);
+  Serial.begin( 9600 );
+  pinMode(tmp, INPUT);
+  pinMode(fotor, INPUT);
+}
+
+void loop()
+{
+  float temp = ( ( 5.0 / 1024 * analogRead( tmp ) ) * 100 - 50 );
+  float luz=analogRead(fotor);
+  lcd.print("temp: ");
+  lcd.print(temp);
+  delay(600);
+  lcd.clear();
+  lcd.print("luz: ");
+  lcd.print(luz);
+  if (luz==1){
+    if (temp>90){
+      digitalWrite(5, LOW);
+      digitalWrite(3, LOW);
+      digitalWrite(6, HIGH);
+    }
+    if (temp<18){
+      digitalWrite(5, HIGH);
+      digitalWrite(3, LOW);
+      digitalWrite(6, LOW);
+    }
+    if (temp>18 and temp<90){
+      digitalWrite(5, LOW);
+      digitalWrite(3, HIGH);
+      digitalWrite(6, LOW);
+    }
+  }
+  else if (luz>0){
+  	digitalWrite(6, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(3, LOW);
+  }
+  delay(600);
+  lcd.clear();
+  
+}
